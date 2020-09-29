@@ -77,7 +77,7 @@ def visualize(model):
         axis: Axes = a[i // 8][i % 8]
         axis.get_xaxis().set_visible(False)
         axis.get_yaxis().set_visible(False)
-        axis.imshow(img, cmap='Gray')
+        axis.imshow(img, cmap='gray')
     plt.show()
     return imgs
 
