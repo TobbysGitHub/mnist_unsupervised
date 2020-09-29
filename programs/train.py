@@ -118,13 +118,12 @@ def adjust_learning_rate(optimizers, lr):
             param_group['lr'] = lr
 
 
-def cal_loss(y1, y2, w, mask, t):
+def cal_loss(y1, y2, w, mask):
     """
     :param y1:  s_b * n_u
     :param y2:  s_b * n_u
     :param w:   s_b(q) * s_b * num_units
     :param mask: s_b * num_units
-    :param t:   n_u
     """
 
     l_1_2 = torch.exp(-torch.abs(y1 - y2).clamp_max(5))  # s_b * n_u
@@ -177,7 +176,7 @@ def optimize(loss, optimizers):
 def train_epoch(model, data_loader, optimizers, ):
     for batch in data_loader:
         (y1, w), y2, mask = model(batch[0], batch[1])
-        loss = cal_loss(y1, y2, w, mask, model.temperature)
+        loss = cal_loss(y1, y2, w, mask)
         optimize(loss, optimizers)
         state.steps += 1
     pass
