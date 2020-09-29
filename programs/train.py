@@ -86,7 +86,6 @@ def prepare_data_loader(data_dir, batch_size):
     class MnistDataSet(MNIST):
         def __init__(self, root):
             super().__init__(root, download=True)
-            self.data, self.targets = self.data.to(device), self.targets.to(device)
             self.my_transform = transforms.Compose(
                 [transforms.RandomAffine(degrees=15, translate=(0.1, 0.1), scale=(0.9, 1.1), shear=5),
                  transforms.ToTensor(),
@@ -175,6 +174,7 @@ def optimize(loss, optimizers):
 
 def train_epoch(model, data_loader, optimizers, ):
     for batch in data_loader:
+        batch = [b.to(device) for b in batch]
         (y1, w), y2, mask = model(batch[0], batch[1])
         loss = cal_loss(y1, y2, w, mask)
         optimize(loss, optimizers)
